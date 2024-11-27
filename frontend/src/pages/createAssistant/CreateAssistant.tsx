@@ -1,16 +1,17 @@
 import { RiDeleteBin6Line, RiEditLine, RiFileCopyLine } from "@remixicon/react";
 import styles from "./createAssistant.module.css";
 import {
-    FormControl,
-    InputLabel,
-    Select,
-    MenuItem,
-    Input,
-    TextField,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  Input,
+  TextField,
 } from "@mui/material";
 import { useState } from "react";
 import { useDropzone } from "react-dropzone";
 import TestPage from "../assistantPreview/AssistantPreview";
+import Layout from "../../components/layout/Layout";
 import CustomizationSettings from "../../components/customizationSettings";
 
 interface Сustomization {
@@ -46,38 +47,37 @@ const CreateAssistant = () => {
 
     const [link, setLink] = useState("");
 
-    const onDrop = (acceptedFiles: File[]) => {
-        setFiles((prevFiles) => [...prevFiles, ...acceptedFiles]);
-    };
+  const onDrop = (acceptedFiles: File[]) => {
+    setFiles((prevFiles) => [...prevFiles, ...acceptedFiles]);
+  };
 
-    const { getRootProps, getInputProps } = useDropzone({
-        onDrop,
-        multiple: true,
+  const { getRootProps, getInputProps } = useDropzone({
+    onDrop,
+    multiple: true,
+  });
+
+  const onLogoDrop = (acceptedFiles: File[]) => {
+    if (acceptedFiles.length > 0) {
+      const file = acceptedFiles[0];
+      const reader = new FileReader();
+      reader.onload = () => {
+        setLogo(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const { getRootProps: getLogoProps, getInputProps: getLogoInputProps } =
+    useDropzone({
+      onDrop: onLogoDrop,
+      accept: {
+        "image/*": [],
+      },
+      multiple: false,
     });
 
-    const onLogoDrop = (acceptedFiles: File[]) => {
-        if (acceptedFiles.length > 0) {
-            const file = acceptedFiles[0];
-            const reader = new FileReader();
-            reader.onload = () => {
-                setLogo(reader.result as string);
-            };
-            reader.readAsDataURL(file);
-        }
-    };
-
-    const { getRootProps: getLogoProps, getInputProps: getLogoInputProps } =
-        useDropzone({
-            onDrop: onLogoDrop,
-            accept: {
-                "image/*": [],
-            },
-            multiple: false,
-        });
-
-    const handleSave = async () => {
-        setOpenPreview(true);
-
+  const handleSave = async () => {
+    setOpenPreview(true);
         const formData = new FormData();
         formData.append("assistantName", name);
         formData.append("link", link);
@@ -97,6 +97,7 @@ const CreateAssistant = () => {
 
 
     return (
+        <Layout>
         <div className={styles.createAssistant}>
             <header className={styles.header}>
                 <div className={styles.titleWrapper}>
@@ -208,7 +209,8 @@ const CreateAssistant = () => {
                 )}
             </div>
         </div>
-    );
+    </Layout>
+  );
 };
 
 export default CreateAssistant;

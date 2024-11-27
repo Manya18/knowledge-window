@@ -1,0 +1,32 @@
+.navBar{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border-right: 1px solid #D9D9D9;
+    padding: 20px;
+}
+.topButtons{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+.assistants{
+    display: flex;
+    align-items: center;
+    padding: 10px 17px;
+    gap: 5px;
+    text-decoration: none;
+    color: #000000;
+    border-radius: 10px;
+    &:hover{
+        background-color: #E0F2F9;
+        color: #00AAE6;
+    }
+}
+.create{
+    padding-top: 10px;
+    padding-bottom: 10px;
+    text-align: center;
+    text-decoration: none;
+    color: #ffffff;
+}
