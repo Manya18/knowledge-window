@@ -8,6 +8,7 @@ interface registrationInfo {
   username: string;
   email: string;
   password: string;
+  gender: string
 }
 
 const RegistrationPage = () => {
@@ -17,6 +18,7 @@ const RegistrationPage = () => {
     username: "",
     email: "",
     password: "",
+    gender: "Woman"
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
