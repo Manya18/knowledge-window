@@ -37,15 +37,15 @@ const TestPage = ({
         body: JSON.stringify({ question: input }),
       })
         .then((response) => response.json())
-        .then((data) => 
-        {
-            const assistantReply: Message = {
-                text: data,
-                sender: "assistant",
-              };
-              setMessages((prevMessages) => [...prevMessages, assistantReply]);
-        
-              setInput("");
+        .then((data) => {
+          console.log(data, data.response)
+          const assistantReply: Message = {
+            text: data.response,
+            sender: "assistant",
+          };
+          setMessages((prevMessages) => [...prevMessages, assistantReply]);
+
+          setInput("");
         })
         .catch((error) => console.error(error));
     }
