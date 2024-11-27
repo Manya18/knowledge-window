@@ -15,7 +15,10 @@ const AuthorizationPage = () => {
         },
         body: JSON.stringify({ username: login, password: password }),
       });
-      if (response.ok) window.location.href = "/";
+      if (response.ok) {
+        window.sessionStorage.setItem('user', login);
+        window.location.href = "/";
+      }
     } catch (error) {
       console.error("Ошибка при авторизации:", error);
     }
