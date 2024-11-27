@@ -17,7 +17,7 @@ const AuthorizationPage = () => {
       });
       if (response.ok) {
         window.sessionStorage.setItem('user', login);
-        window.location.href = "/";
+        window.location.href = "/assistantsList";
       }
     } catch (error) {
       console.error("Ошибка при авторизации:", error);

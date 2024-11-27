@@ -1,0 +1,14 @@
+.customization {
+    display: flex;
+    gap: 16px;
+}
+
+.customizationColor,
+.fontSizeInput,
+.logoSizeInput {
+    width: 100%;
+}
+
+.fontControl {
+    min-width: 200px;
+}

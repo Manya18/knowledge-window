@@ -11,8 +11,28 @@ import {
 import { useState } from "react";
 import { useDropzone } from "react-dropzone";
 import TestPage from "../assistantPreview/AssistantPreview";
+import CustomizationSettings from "../../components/customizationSettings";
+
+interface Сustomization {
+    bgColor: string;
+    setBgColor: (value: string) => void;
+    textColor: string;
+    setTextColor: (value: string) => void;
+    fontFamily: string;
+    setFontFamily: (value: string) => void;
+    fontSize: number;
+    setFontSize: (value: number) => void;
+}
 
 const CreateAssistant = () => {
+
+    // const [customization, setСustomization] = useState<Сustomization>({
+    //     bgColor: "",
+    //     textColor: "",    
+    //     fontFamily: "",
+    //     fontSize: 0
+    //   });
+
     const [name, setName] = useState("");
     const [files, setFiles] = useState<File[]>([]);
     const [openPreview, setOpenPreview] = useState(false);
@@ -20,6 +40,10 @@ const CreateAssistant = () => {
     const [logo, setLogo] = useState<string | null>(null);
     const [bgColor, setBgColor] = useState("#ffffff");
     const [textColor, setTextColor] = useState("#000000");
+    const [fontFamily, setFontFamily] = useState("Arial");
+    const [fontSize, setFontSize] = useState(16);
+    const [logoSize, setLogoSize] = useState(100);
+
     const [link, setLink] = useState("");
 
     const onDrop = (acceptedFiles: File[]) => {
@@ -56,16 +80,16 @@ const CreateAssistant = () => {
 
         const formData = new FormData();
         formData.append("assistantName", name);
-        formData.append("link", link); // Ссылка
+        formData.append("link", link);
         files.forEach(file => formData.append("files", file));
+        formData.append("message", helloMessage);
+        formData.append("customize", " 1");
+
         try {
             const response = await fetch('http://localhost:8080/api/file/upload', {
                 method: 'POST',
                 body: formData,
             });
-
-            // const result = await response.json();
-            // console.log(result);
         } catch (error) {
             console.error('Ошибка при отправке данных:', error);
         }
@@ -109,6 +133,7 @@ const CreateAssistant = () => {
                     variant="outlined"
                     value={helloMessage}
                     onChange={(e) => setHelloMessage(e.target.value)}
+
                 />
                 <TextField
                     id="outlined-link"
@@ -127,30 +152,39 @@ const CreateAssistant = () => {
                     </ul>
                 </div>
                 <div className={styles.customization}>
-                    <TextField
-                        className={styles.customizationColor}
-                        id="bg-color"
-                        label="Цвет фона"
-                        type="color"
-                        value={bgColor}
-                        onChange={(e) => setBgColor(e.target.value)}
+                    <CustomizationSettings
+                        bgColor={bgColor}
+                        setBgColor={setBgColor}
+                        textColor={textColor}
+                        setTextColor={setTextColor}
+                        fontFamily={fontFamily}
+                        setFontFamily={setFontFamily}
+                        fontSize={fontSize}
+                        setFontSize={setFontSize}
                     />
-                    <TextField
-                        className={styles.customizationColor}
-                        id="text-color"
-                        label="Цвет текста"
-                        type="color"
-                        value={textColor}
-                        onChange={(e) => setTextColor(e.target.value)}
-                    />
+
                 </div>
+    
+                <TextField
+                    className={styles.logoSizeInput}
+                    id="logo-size"
+                    label="Размер логотипа"
+                    type="number"
+                    value={logoSize}
+                    onChange={(e) => setLogoSize(Number(e.target.value))}
+                />
 
                 <div {...getLogoProps()} className={styles.logoUpload}>
                     <input {...getLogoInputProps()} />
                     <p>Перетащите логотип сюда или нажмите, чтобы выбрать файл</p>
                     {logo && (
-                        <img src={logo} alt="Логотип" className={styles.logoPreview} />
+                        <img
+                            src={logo}
+                            alt="Логотип"
+                            className={styles.logoPreview}
+                        />
                     )}
+
                 </div>
                 <button
                     className={`${styles.testButton} primary-button`}
@@ -167,6 +201,9 @@ const CreateAssistant = () => {
                         bgColor={bgColor}
                         textColor={textColor}
                         logo={logo}
+                        fontFamily={fontFamily}
+                        fontSize={fontSize}
+                        logoSize={logoSize}
                     ></TestPage>
                 )}
             </div>

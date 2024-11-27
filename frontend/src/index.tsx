@@ -7,6 +7,7 @@ import CreateAssistant from './pages/createAssistant/CreateAssistant';
 import TestPage from './pages/assistantPreview/AssistantPreview';
 import RegistrationPage from './pages/registrationPage/RegistrationPage';
 import AuthorizationPage from './pages/authorizationPage/AuthorizationPage';
+import AssistantsList from './pages/assistantsList/assistantsList';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -19,7 +20,15 @@ const router = createBrowserRouter([
   },
   {
     path: "/createAssistant",
-    element: <CreateAssistant></CreateAssistant>,
+    element: <CreateAssistant />,
+  },
+  {
+    path: "/createAssistant/:id",
+    element: <CreateAssistant />,
+  },
+  {
+    path: "/assistantsList",
+    element: <AssistantsList />,
   },
   {
     path: "/auth",
@@ -29,8 +38,12 @@ const router = createBrowserRouter([
     path: "/registration",
     element: <RegistrationPage></RegistrationPage>,
   },
+  // {
+  //   path: "/assistantPreview/:id",
+  //   element: <TestPage />,
+  // },
 ]);
 
 root.render(
-    <RouterProvider router={router} />
+  <RouterProvider router={router} />
 );

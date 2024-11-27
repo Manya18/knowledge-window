@@ -4,6 +4,8 @@
 node_modules/
 /backend/files
 /backend/.idea
+/backend/target
+
 /.pnp
 .pnp.js 
 
