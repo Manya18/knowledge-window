@@ -17,6 +17,7 @@ interface Message {
 
 const TestPage = ({
   open,
+  assistantName,
   setOpen,
   helloMessage,
   bgColor,
@@ -24,6 +25,7 @@ const TestPage = ({
   logo
 }: {
   open: boolean;
+  assistantName: string;
   setOpen: (open: boolean) => void;
   helloMessage: string;
   bgColor: string;
@@ -43,7 +45,7 @@ const TestPage = ({
       setMessages((prevMessages) => [...prevMessages, welcomeMessage]);
     }
   }, [helloMessage]);
-  
+
   const handleSend = () => {
     if (input.trim()) {
       const userMessage: Message = {
@@ -58,11 +60,14 @@ const TestPage = ({
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ question: input }),
+        body: JSON.stringify({
+          question: input,
+          assistantName: assistantName,
+        }),
       })
         .then((response) => response.json())
         .then((data) => {
-          console.log(data, data.response)
+          console.log(data, data.response);
           const assistantReply: Message = {
             text: data.response,
             sender: "assistant",
@@ -80,7 +85,8 @@ const TestPage = ({
     <div className={styles.testWindow}>
       <div className={styles.header} style={{ backgroundColor: bgColor }}>
         {logo && <img src={logo} alt="Логотип" className={styles.logo} />}
-        <h2 className={styles.title} style={{ color: textColor }}>Ассистент 1</h2>
+        <h2 className={styles.title} style={{ color: textColor }}>{assistantName}</h2>
+
       </div>
       <div className={styles.chatBody}>
         {messages.map((msg, index) => (
