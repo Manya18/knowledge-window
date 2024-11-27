@@ -21,6 +21,8 @@ import java.nio.file.Paths;
 @RequiredArgsConstructor
 public class FileService {
 
+    private static final Path BASE_DIRECTORY = Path.of("files");
+
     private final AssistantRepository assistantRepository;
 
     private final FileRepository fileRepository;
@@ -32,11 +34,13 @@ public class FileService {
             String message,
             String customize
     ) throws IOException {
-        Path directory = Paths.get(assistantName);
+        Path assistantDirectory = Paths.get(assistantName);
+
+        Path directory = BASE_DIRECTORY.resolve(assistantDirectory);
 
         Assistant assistant;
 
-        if (!Files.exists(Path.of("files" + directory))) {
+        if (!Files.exists(directory)) {
             Files.createDirectories(directory);
             assistant = assistantRepository.save(Assistant.builder()
                     .name(assistantName)
@@ -52,7 +56,7 @@ public class FileService {
             var date = getDateFromLink(link);
 
             if (!date.isEmpty()) {
-                Path filePath = directory.resolve(String.valueOf(link.hashCode()));
+                Path filePath = directory.resolve(link.hashCode() + ".txt");
 
                 Files.write(filePath, date.getBytes());
 
