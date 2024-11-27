@@ -15,8 +15,6 @@ import knowledge.window.dto.request.RegistrationRequest;
 import knowledge.window.dto.response.TokenResponse;
 import knowledge.window.security.JwtService;
 
-import java.util.Map;
-
 @Service
 @RequiredArgsConstructor
 public class AuthenticationService {
@@ -50,10 +48,7 @@ public class AuthenticationService {
 
         UserDetails userDetails = userDetailsService.loadUserByUsername(loginRequest.username());
 
-        var token = jwtService.generateToken(
-                Map.of("role", userService.getRolesByUsername(loginRequest.username())),
-                userDetails
-        );
+        var token = jwtService.generateToken(userDetails);
 
         var refreshToken = jwtService.generateRefreshToken(userDetails);
 

@@ -20,7 +20,6 @@ public class UserMapper {
         user.setUsername(registrationRequest.username());
         user.setPassword(registrationRequest.password());
         user.setEmail(registrationRequest.email());
-        user.setGender(registrationRequest.gender());
         return user;
     }
 
@@ -34,7 +33,6 @@ public class UserMapper {
                 .surname(user.getSurname())
                 .username(user.getUsername())
                 .email(user.getEmail())
-                .gender(user.getGender())
                 .build();
     }
 }
