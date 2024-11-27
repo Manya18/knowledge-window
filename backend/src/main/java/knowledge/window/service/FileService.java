@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Random;
 
 @Service
 @Slf4j
@@ -26,6 +27,8 @@ public class FileService {
     private final AssistantRepository assistantRepository;
 
     private final FileRepository fileRepository;
+
+    private final Random random = new Random();
 
     public void saveFile(
             String assistantName,
@@ -68,6 +71,10 @@ public class FileService {
             String fileName = file.getOriginalFilename();
 
             Path filePath = directory.resolve(fileName);
+
+            if (Files.exists(filePath)) {
+                filePath = filePath.resolve(String.valueOf(random.nextInt()));
+            }
 
             Files.write(filePath, file.getBytes());
 
