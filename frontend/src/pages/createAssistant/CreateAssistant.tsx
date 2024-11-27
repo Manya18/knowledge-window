@@ -53,18 +53,22 @@ const CreateAssistant = () => {
 
     const handleSave = async () => {
         setOpenPreview(true);
+
         const formData = new FormData();
         formData.append("assistantName", name);
         formData.append("link", link); // Ссылка
         files.forEach(file => formData.append("files", file));
-
         try {
-            const response = await fetch('http://localhost:8080/api/upload', {
+            const response = await fetch('http://localhost:8080/api/file/upload', {
                 method: 'POST',
+                // headers: {
+                //     "Content-Type": "application/json",
+                // },
                 body: formData,
             });
-            const result = await response.json();
-            console.log(result);
+
+            // const result = await response.json();
+            // console.log(result);
         } catch (error) {
             console.error('Ошибка при отправке данных:', error);
         }

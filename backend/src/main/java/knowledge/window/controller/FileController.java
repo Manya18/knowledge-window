@@ -23,16 +23,18 @@ import java.util.List;
 @RequestMapping("/api/file")
 public class FileController {
 
-    @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value = "/upload")
     public ResponseEntity<Void> uploadFile(
-            @RequestBody FormData formData) throws IOException {
-        Path directory = Paths.get(formData.assistantName());
+            @RequestParam("assistantName") String assistantName,
+            @RequestParam("link") String link,
+            @RequestParam("files") MultipartFile[] files) throws IOException {
+        Path directory = Paths.get(assistantName);
 
         if (!Files.exists(directory)) {
             Files.createDirectories(directory);
         }
 
-        for (var file : formData.files()) {
+        for (var file : files) {
             String fileName = file.getOriginalFilename();
             Path filePath = directory.resolve(fileName);
 

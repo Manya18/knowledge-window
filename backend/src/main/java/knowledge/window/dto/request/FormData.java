@@ -7,6 +7,6 @@ import java.util.List;
 public record FormData(
         String assistantName,
         String link,
-        List<MultipartFile> files
+        MultipartFile[] files
 ) {
 }
