@@ -7,6 +7,7 @@ import knowledge.window.repository.FileRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
@@ -30,6 +31,7 @@ public class FileService {
 
     private final Random random = new Random();
 
+    @Transactional
     public void saveFile(
             String assistantName,
             String link,
@@ -73,7 +75,7 @@ public class FileService {
             Path filePath = directory.resolve(fileName);
 
             if (Files.exists(filePath)) {
-                filePath = filePath.resolve(String.valueOf(random.nextInt()));
+                filePath = Path.of(filePath.getFileName() + String.valueOf(random.nextInt()));
             }
 
             Files.write(filePath, file.getBytes());
