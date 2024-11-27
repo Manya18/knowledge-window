@@ -41,7 +41,10 @@ const RegistrationPage = () => {
           body: JSON.stringify(userInfo),
         }
       );
-      if (response.ok) window.location.href = "/";
+      if (response.ok) {
+        window.sessionStorage.setItem('user', userInfo.username);
+        window.location.href = "/";
+      }
     } catch (error) {
       console.error("Ошибка при регистрации:", error);
     }
