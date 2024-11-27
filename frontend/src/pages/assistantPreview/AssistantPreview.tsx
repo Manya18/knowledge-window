@@ -7,26 +7,50 @@ import {
   Button,
 } from "@mui/material";
 import styles from "./assistantPreview.module.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 interface Message {
   text: string;
   sender: "user" | "assistant";
+  timestamp: string;
 }
 
 const TestPage = ({
   open,
   setOpen,
+  helloMessage,
+  bgColor,
+  textColor,
+  logo
 }: {
   open: boolean;
   setOpen: (open: boolean) => void;
+  helloMessage: string;
+  bgColor: string;
+  textColor: string;
+  logo: string | null
 }) => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
 
+  useEffect(() => {
+    if (helloMessage) {
+      const welcomeMessage: Message = {
+        text: helloMessage,
+        sender: "assistant",
+        timestamp: new Date().toLocaleTimeString(),
+      };
+      setMessages((prevMessages) => [...prevMessages, welcomeMessage]);
+    }
+  }, [helloMessage]);
+  
   const handleSend = () => {
     if (input.trim()) {
-      const userMessage: Message = { text: input, sender: "user" };
+      const userMessage: Message = {
+        text: input,
+        sender: "user",
+        timestamp: new Date().toLocaleTimeString(),
+      };
       setMessages((prevMessages) => [...prevMessages, userMessage]);
 
       fetch("http://localhost:5000/api/query", {
@@ -42,6 +66,7 @@ const TestPage = ({
           const assistantReply: Message = {
             text: data.response,
             sender: "assistant",
+            timestamp: new Date().toLocaleTimeString(),
           };
           setMessages((prevMessages) => [...prevMessages, assistantReply]);
 
@@ -53,13 +78,18 @@ const TestPage = ({
 
   return (
     <div className={styles.testWindow}>
-      <div className={styles.header}>
-        <h2 className={styles.title}>Ассистент 1</h2>
+      <div className={styles.header} style={{ backgroundColor: bgColor }}>
+        {logo && <img src={logo} alt="Логотип" className={styles.logo} />}
+        <h2 className={styles.title} style={{ color: textColor }}>Ассистент 1</h2>
       </div>
       <div className={styles.chatBody}>
         {messages.map((msg, index) => (
           <div key={index} className={msg.sender}>
-            {msg.text}
+            <div className={styles.message}>
+              <strong>{msg.sender === "user" ? "Вы" : "Ассистент"}</strong>
+              <div>{msg.text}</div>
+              <div className={styles.timestamp}>{msg.timestamp}</div>
+            </div>
           </div>
         ))}
       </div>

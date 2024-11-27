@@ -1,0 +1,74 @@
+.testWindow {
+    display: flex;
+    flex-direction: column;
+    height: 400px;
+    width: 400px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    overflow: hidden;
+    background-color: #fff;
+}
+
+.header {
+    padding: 10px;
+    text-align: center;
+}
+.logo{
+    width: 30px;
+    height: 30px;
+}
+.title {
+    margin: 0;
+}
+.chatBody {
+    flex: 1;
+    padding: 10px;
+    overflow-y: auto;
+}
+
+.user {
+    text-align: right;
+    margin: 10px 0;
+}
+
+.assistant {
+    text-align: left;
+    margin: 10px 0;
+}
+
+.message {
+    border-radius: 5px;
+    padding: 10px;
+    max-width: 70%;
+    position: relative;
+}
+
+.user .message {
+    background-color: #e1ffc7; /* Цвет фона для сообщений пользователя */
+    display: inline-block;
+    margin-left: auto; /* Сдвигаем вправо */
+}
+
+.assistant .message {
+    background-color: #f1f1f1; /* Цвет фона для сообщений ассистента */
+    display: inline-block;
+}
+
+.timestamp {
+    font-size: 0.8em;
+    color: gray;
+    position: absolute;
+    bottom: -15px;
+    right: 10px;
+}
+
+.chatInput {
+    display: flex;
+    padding: 10px;
+    border-top: 1px solid #ccc;
+}
+
+.chatInput input {
+    flex: 1;
+    margin-right: 10px;
+}
