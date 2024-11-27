@@ -21,14 +21,14 @@ public class AssistantController {
 
     @GetMapping("/all")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<Set<Assistant>> register(@RequestParam String userName) {
+    public ResponseEntity<Set<Assistant>> getAll(@RequestParam String userName) {
         return ResponseEntity.ok()
                 .body(assistantService.getAllAssistants(userName));
     }
 
     @DeleteMapping("/delete")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<Void> register(@RequestParam UUID assistantId) {
+    public ResponseEntity<Void> delete(@RequestParam UUID assistantId) {
         assistantService.delete(assistantId);
         return ResponseEntity.ok().build();
     }
