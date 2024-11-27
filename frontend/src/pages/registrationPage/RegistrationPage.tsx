@@ -28,15 +28,21 @@ const RegistrationPage = () => {
   };
 
   const registration = async () => {
-      try {
-        const response = await fetch("http://localhost:8080/api/auth/registration", {
+    try {
+      const response = await fetch(
+        "http://localhost:8080/api/auth/registration",
+        {
           method: "POST",
+          headers: {
+            'Content-Type': "application/json",
+          },
           body: JSON.stringify(userInfo),
-        });
-        if(response.ok) window.location.href = '/';
-      } catch (error) {
-        console.error("Ошибка при регистрации:", error);
-      }
+        }
+      );
+      if (response.ok) window.location.href = "/";
+    } catch (error) {
+      console.error("Ошибка при регистрации:", error);
+    }
   };
 
   return (
@@ -104,7 +110,10 @@ const RegistrationPage = () => {
           required
           fullWidth
         ></TextField> */}
-        <button onClick={registration} className={`${styles.button} primary-button`}>
+        <button
+          onClick={registration}
+          className={`${styles.button} primary-button`}
+        >
           Зарегистрироваться
         </button>
         <div className={styles.linkWrapper}>
