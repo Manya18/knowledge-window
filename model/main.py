@@ -6,9 +6,17 @@ import os
 from concurrent.futures import ThreadPoolExecutor
 from flask_caching import Cache
 from bs4 import BeautifulSoup
+# from llama_index import VectorIndex
 
 app = Flask(__name__)
 CORS(app, resources={r"/api/*": {"origins": "*"}})
+
+
+# def create_index_from_folder(folder_path):
+#     documents = SimpleDirectoryReader(folder_path).load_data()
+#     # Создание векторного индекса
+#     index = VectorIndex.from_documents(documents)
+#     return index
 
 
 def generate_with_llama_parallel(prompt):
@@ -48,6 +56,8 @@ def generate_with_llama_parallel(prompt):
 #     except requests.RequestException as e:
 #         return f"Ошибка при запросе к LLaMA API: {e}"
 
+
+# вернуть если что
 @app.route('/api/query', methods=['OPTIONS', 'POST'])
 def query_options():
     if request.method == 'OPTIONS':
