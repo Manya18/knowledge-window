@@ -28,7 +28,7 @@ public class AssistantController {
 
     @GetMapping("/{name}")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<Assistant> getById(@RequestParam String name) {
+    public ResponseEntity<Assistant> getById(@PathVariable String name) {
         return ResponseEntity.ok()
                 .body(assistantService.getByName(name));
     }
