@@ -16,6 +16,7 @@ import CustomizationSettings from "../../components/headerCustomization/HeaderCu
 import { CustomizationType, DialogCustomizationType, HeaderCustomizationType } from "../../types/customatizationType";
 import DialogCustomization from "../../components/dialogCustomization/DialogCustomization";
 import IframeWrapper from "../iframeWrapper/IframeWrapper";
+import { UUID } from "crypto";
 
 const CreateAssistant = () => {
     const token = window.sessionStorage.getItem('token');
@@ -117,7 +118,7 @@ const CreateAssistant = () => {
     const handleGetIframeLink = () => {
         console.log('iframe', iframeUrl)
     };
-
+ 
     return (
         <Layout>
             <div className={styles.createAssistant}>
@@ -126,14 +127,14 @@ const CreateAssistant = () => {
                         <h1 className={styles.title}>Создание</h1>
                     </div>
                     <div className={styles.actionButtons}>
-                        <button className={`${styles.iconButton} primary-button`}>
+                        {/* <button className={`${styles.iconButton} primary-button`} onClick={handleDelete}>
                             <RiDeleteBin6Line size={24}></RiDeleteBin6Line>
-                        </button>
+                        </button> */}
                         <button
                             className={`${styles.saveButton} primary-button`}
                             onClick={handleGetIframeLink}
                         >
-                            Сохранить
+                            Получить iframe
                         </button>
                     </div>
                 </header>
@@ -151,7 +152,6 @@ const CreateAssistant = () => {
                         variant="outlined"
                         value={helloMessage}
                         onChange={(e) => setHelloMessage(e.target.value)}
-
                     />
                     <TextField
                         id="outlined-link"
