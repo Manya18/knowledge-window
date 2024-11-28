@@ -1,5 +1,6 @@
 package knowledge.window.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -21,11 +22,12 @@ public class Assistant {
     @Column(name = "name")
     private String name;
 
-    @OneToMany(mappedBy = "assistant")
+    @OneToMany(mappedBy = "assistant", cascade = CascadeType.REMOVE)
     private Set<File> files;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @JsonIgnore
     private User user;
 
     @Column(name = "message")

@@ -6,6 +6,7 @@ import org.springframework.http.HttpHeaders;
 
 import knowledge.window.security.JwtService;
 
+
 @RequiredArgsConstructor
 public abstract class AbstractController {
 

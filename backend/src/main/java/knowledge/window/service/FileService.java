@@ -29,6 +29,8 @@ public class FileService {
 
     private final FileRepository fileRepository;
 
+    private final UserService userService;
+
     private final Random random = new Random();
 
     @Transactional
@@ -37,11 +39,14 @@ public class FileService {
             String link,
             MultipartFile[] files,
             String message,
-            String customize
+            String customize,
+            String userName
     ) throws IOException {
         Path assistantDirectory = Paths.get(assistantName);
 
         Path directory = BASE_DIRECTORY.resolve(assistantDirectory);
+
+        var user = userService.getByUsername(userName);
 
         Assistant assistant;
 
@@ -51,6 +56,7 @@ public class FileService {
                     .name(assistantName)
                     .message(message)
                     .customize(customize)
+                    .user(user)
                     .build()
             );
         } else {
