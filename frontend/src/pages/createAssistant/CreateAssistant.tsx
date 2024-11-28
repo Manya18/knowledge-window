@@ -97,13 +97,14 @@ const CreateAssistant = () => {
         }
         formData.append("customize", " 1");
         try {
-            const response = await fetch(`http://${process.env.SERVER_HOST}:${process.env.SERVER_PORT}/api/file/upload`, {
+            const response = await fetch(`http://localhost:8090/api/file/upload`, {
                 headers: {
                     "Authorization": `Bearer ${token}`,
                 },
                 method: 'POST',
                 body: formData,
             });
+            window.localStorage.setItem('assistant', name);
         } catch (error) {
             console.error('Ошибка при отправке данных:', error);
         }
@@ -211,8 +212,6 @@ const CreateAssistant = () => {
                             open={openPreview}
                             assistantName={name}
                             setOpen={setOpenPreview}
-                            helloMessage={helloMessage}
-                            customization={style}
                         ></TestPage>
                     )}
                 </div>

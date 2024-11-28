@@ -2,6 +2,7 @@ import { TextField, Button } from "@mui/material";
 import styles from "./assistantPreview.module.css";
 import { useEffect, useState } from "react";
 import { CustomizationType } from "../../types/customatizationType";
+import { AssistantInfoType } from "../../types/assistantType";
 
 interface Message {
   text: string;
@@ -13,22 +14,19 @@ const TestPage = ({
   open,
   assistantName,
   setOpen,
-  customization,
-  helloMessage
 }: {
-  open: boolean;
+  open?: boolean;
   assistantName: string;
-  setOpen: (open: boolean) => void;
-  customization: CustomizationType;
-  helloMessage: string
+  setOpen?: (open: boolean) => void;
 }) => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
-
+  const [assistant, setAssistant] = useState<AssistantInfoType>();
+  const [customization, setCustomization] = useState<CustomizationType>();
   useEffect(() => {
-    if (helloMessage) {
+    if (assistant?.message) {
       const welcomeMessage: Message = {
-        text: helloMessage,
+        text: assistant.message,
         sender: "assistant",
         timestamp: new Date().toLocaleTimeString([], {
           hour: "2-digit",
@@ -37,7 +35,34 @@ const TestPage = ({
       };
       setMessages((prevMessages) => [...prevMessages, welcomeMessage]);
     }
-  }, [helloMessage]);
+  }, [assistant?.message]);
+
+  useEffect(() => {
+    const token = window.sessionStorage.getItem("token");
+    const response = fetch(
+      `http://${process.env.SERVER_HOST}:${process.env.SERVER_PORT}/api/assistant/${assistantName}`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    )
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`Ошибка: ${response.statusText}`);
+        }
+        return response.json();
+      })
+      .then((data: AssistantInfoType) => {
+        setAssistant(data);
+        setCustomization(JSON.parse(data.customize));
+      })
+      .catch((error) => {
+        console.error("Не удалось загрузить ассистентов:", error);
+      });
+
+  }, [assistantName]);
 
   const handleSend = () => {
     if (input.trim()) {
@@ -80,8 +105,8 @@ const TestPage = ({
 
   return (
     <div className={styles.testWindow}>
-      <div className={styles.header} style={{ backgroundColor: customization.header.bgColor }}>
-        {customization.header.logo && (
+      <div className={styles.header} style={{ backgroundColor: customization?.header.bgColor }}>
+        {customization?.header.logo && (
           <img
             src={customization.header.logo}
             alt="Логотип"
@@ -92,9 +117,9 @@ const TestPage = ({
         <h2
           className={styles.title}
           style={{
-            color: customization.header.textColor,
-            fontSize: `${customization.header.fontSize}px`,
-            fontFamily: customization.header.fontFamily,
+            color: customization?.header.textColor,
+            fontSize: `${customization?.header.fontSize}px`,
+            fontFamily: customization?.header.fontFamily,
           }}
         >
           {assistantName}
@@ -108,11 +133,11 @@ const TestPage = ({
             className={msg.sender === "user" ? styles.user : styles.assistant}
           >
             <div className={styles.message}>
-              <strong style={{ fontSize: `${customization.dialog.fontSize}px` }}>
+              <strong style={{ fontSize: `${customization?.dialog.fontSize}px` }}>
                 {msg.sender === "user" ? "Вы" : "Ассистент"}
               </strong>
               <div style={{ display: "flex" }}>
-                <div style={{ fontSize: `${customization.dialog.fontSize}px` }}>{msg.text}</div>
+                <div style={{ fontSize: `${customization?.dialog.fontSize}px` }}>{msg.text}</div>
                 <div className={styles.timestamp}>{msg.timestamp}</div>
               </div>
             </div>
