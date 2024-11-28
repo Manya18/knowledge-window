@@ -20,7 +20,7 @@ const AssistantsList: React.FC = () => {
   useEffect(() => {
     if (user && token) {
       const response = fetch(
-        `http://localhost:8080/api/assistant/all?userName=${user}`,
+        `http://${process.env.SERVER_HOST}:${process.env.SERVER_PORT}/api/assistant/all?userName=${user}`,
         {
           method: "GET",
           headers: {
@@ -58,7 +58,7 @@ const AssistantsList: React.FC = () => {
 
   const handleDelete = (id: UUID) => {
     const response = fetch(
-      `http://localhost:8080/api/assistant/delete?assistantId=${id}`,
+      `http://${process.env.SERVER_HOST}:${process.env.SERVER_PORT}/api/assistant/delete?assistantId=${id}`,
       {
         method: "DELETE",
         headers: {

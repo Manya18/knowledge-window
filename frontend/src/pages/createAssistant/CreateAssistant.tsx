@@ -15,6 +15,7 @@ import Layout from "../../components/layout/Layout";
 import CustomizationSettings from "../../components/headerCustomization/HeaderCustomization";
 import { CustomizationType, DialogCustomizationType, HeaderCustomizationType } from "../../types/customatizationType";
 import DialogCustomization from "../../components/dialogCustomization/DialogCustomization";
+import IframeWrapper from "../iframeWrapper/IframeWrapper";
 
 const CreateAssistant = () => {
     const token = window.sessionStorage.getItem('token');
@@ -44,7 +45,7 @@ const CreateAssistant = () => {
     const [files, setFiles] = useState<File[]>([]);
     const [openPreview, setOpenPreview] = useState(false);
     const [helloMessage, setHelloMessage] = useState("");
-
+    const [iframeUrl, setIframeUrl] = useState<string>('http://localhost:3000/assistantPreview');
     const [link, setLink] = useState("");
 
     const onDrop = (acceptedFiles: File[]) => {
@@ -96,7 +97,7 @@ const CreateAssistant = () => {
         }
         formData.append("customize", " 1");
         try {
-            const response = await fetch('http://localhost:8080/api/file/upload', {
+            const response = await fetch(`http://${process.env.SERVER_HOST}:${process.env.SERVER_PORT}/api/file/upload`, {
                 headers: {
                     "Authorization": `Bearer ${token}`,
                 },
@@ -107,6 +108,10 @@ const CreateAssistant = () => {
             console.error('Ошибка при отправке данных:', error);
         }
     };
+
+    const handleGetIframeLink = () => {
+        console.log('iframe', iframeUrl)
+      };
 
     return (
         <Layout>
@@ -121,6 +126,7 @@ const CreateAssistant = () => {
                         </button>
                         <button
                             className={`${styles.saveButton} primary-button`}
+                            onClick={handleGetIframeLink}
                         >
                             Сохранить
                         </button>
@@ -174,10 +180,9 @@ const CreateAssistant = () => {
                                             value={customizationHeader.logoSize}
                                             onChange={(e) => setCustomizationHeader({...customizationHeader, logoSize: e.target.value})}
                                         />
-
                                         <div {...getLogoProps()} className={styles.logoUpload}>
                                             <input {...getLogoInputProps()} />
-                                            <p>Перетащите логотип сюда или нажмите, чтобы выбрать файл</p>
+                                            <p>Добавьте логотип</p>
                                             {customizationHeader.logo && (
                                                 <img
                                                     src={customizationHeader.logo}
@@ -190,7 +195,7 @@ const CreateAssistant = () => {
                                 </div>
                             </div>
                             <div className={styles.dialogCust}>
-                                <h3 className={styles.headerCust}>Кастомизация диалога</h3>
+                                <h3 className={styles.headerCustTitle}>Кастомизация диалога</h3>
                                 <DialogCustomization options={dialogCustomization} setOptions={setDialogCustomization} />
                             </div>
                         </div>
@@ -212,6 +217,7 @@ const CreateAssistant = () => {
                     )}
                 </div>
             </div>
+            <IframeWrapper src={iframeUrl} title={name} width="100%" height="100%"/>
         </Layout>
     );
 };
