@@ -8,12 +8,12 @@ import {
     Input,
     TextField,
 } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import TestPage from "../assistantPreview/AssistantPreview";
 import Layout from "../../components/layout/Layout";
 import CustomizationSettings from "../../components/headerCustomization/HeaderCustomization";
-import { DialogCustomizationType, HeaderCustomizationType } from "../../types/customatizationType";
+import { CustomizationType, DialogCustomizationType, HeaderCustomizationType } from "../../types/customatizationType";
 import DialogCustomization from "../../components/dialogCustomization/DialogCustomization";
 
 const CreateAssistant = () => {
@@ -24,6 +24,8 @@ const CreateAssistant = () => {
         textColor: "#000000",
         fontFamily: "Arial",
         fontSize: 16,
+        logo: null,
+        logoSize: null
     });
     const [dialogCustomization, setDialogCustomization] = useState<DialogCustomizationType>({
         bgColor: "#ffffff",
@@ -33,17 +35,15 @@ const CreateAssistant = () => {
         fontFamily: "Arial",
         fontSize: 16,
     });
+    const [style, setStyle] = useState<CustomizationType>({
+        header: customizationHeader,
+        dialog: dialogCustomization
+    })
 
     const [name, setName] = useState("");
     const [files, setFiles] = useState<File[]>([]);
     const [openPreview, setOpenPreview] = useState(false);
     const [helloMessage, setHelloMessage] = useState("");
-    const [logo, setLogo] = useState<string | null>(null);
-    const [bgColor, setBgColor] = useState("#ffffff");
-    const [textColor, setTextColor] = useState("#000000");
-    const [fontFamily, setFontFamily] = useState("Arial");
-    const [fontSize, setFontSize] = useState(16);
-    const [logoSize, setLogoSize] = useState(100);
 
     const [link, setLink] = useState("");
 
@@ -56,12 +56,19 @@ const CreateAssistant = () => {
         multiple: true,
     });
 
-    const onLogoDrop = (acceptedFiles: File[]) => {
+    useEffect(() => {
+        setStyle({
+            header: customizationHeader,
+            dialog: dialogCustomization
+        })
+    }, [customizationHeader, dialogCustomization]);
+
+        const onLogoDrop = (acceptedFiles: File[]) => {
         if (acceptedFiles.length > 0) {
             const file = acceptedFiles[0];
             const reader = new FileReader();
             reader.onload = () => {
-                setLogo(reader.result as string);
+                setCustomizationHeader({...customizationHeader, logo: reader.result as string});
             };
             reader.readAsDataURL(file);
         }
@@ -83,8 +90,11 @@ const CreateAssistant = () => {
         formData.append("link", link);
         files.forEach(file => formData.append("files", file));
         formData.append("message", helloMessage);
+        const styles = {
+            header: customizationHeader,
+            dialog: dialogCustomization
+        }
         formData.append("customize", " 1");
-
         try {
             const response = await fetch('http://localhost:8080/api/file/upload', {
                 headers: {
@@ -161,16 +171,16 @@ const CreateAssistant = () => {
                                             id="logo-size"
                                             label="Размер логотипа"
                                             type="number"
-                                            value={logoSize}
-                                            onChange={(e) => setLogoSize(Number(e.target.value))}
+                                            value={customizationHeader.logoSize}
+                                            onChange={(e) => setCustomizationHeader({...customizationHeader, logoSize: e.target.value})}
                                         />
 
                                         <div {...getLogoProps()} className={styles.logoUpload}>
                                             <input {...getLogoInputProps()} />
                                             <p>Перетащите логотип сюда или нажмите, чтобы выбрать файл</p>
-                                            {logo && (
+                                            {customizationHeader.logo && (
                                                 <img
-                                                    src={logo}
+                                                    src={customizationHeader.logo}
                                                     alt="Логотип"
                                                     className={styles.logoPreview}
                                                 />
@@ -185,6 +195,21 @@ const CreateAssistant = () => {
                             </div>
                         </div>
                     </div>
+                    <button
+                        className={`${styles.testButton} primary-button`}
+                        onClick={handleSave}
+                    >
+                        Сохранить
+                    </button>
+                    {openPreview && (
+                        <TestPage
+                            open={openPreview}
+                            assistantName={name}
+                            setOpen={setOpenPreview}
+                            helloMessage={helloMessage}
+                            customization={style}
+                        ></TestPage>
+                    )}
                 </div>
             </div>
         </Layout>

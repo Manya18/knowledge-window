@@ -3,6 +3,8 @@ export interface HeaderCustomizationType {
     textColor: string;
     fontFamily: string;
     fontSize: number;
+    logo: string | null;
+    logoSize: string | null
 }
 
 export interface DialogCustomizationType {
@@ -12,4 +14,9 @@ export interface DialogCustomizationType {
     borderColor: string;
     fontFamily: string;
     fontSize: number;
+}
+
+export interface CustomizationType {
+    header: HeaderCustomizationType,
+    dialog: DialogCustomizationType
 }

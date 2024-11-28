@@ -1,9 +1,7 @@
-import {
-  TextField,
-  Button,
-} from "@mui/material";
+import { TextField, Button } from "@mui/material";
 import styles from "./assistantPreview.module.css";
 import { useEffect, useState } from "react";
+import { CustomizationType } from "../../types/customatizationType";
 
 interface Message {
   text: string;
@@ -15,24 +13,14 @@ const TestPage = ({
   open,
   assistantName,
   setOpen,
-  helloMessage,
-  bgColor,
-  textColor,
-  logo,
-  fontFamily,
-  fontSize,
-  logoSize
+  customization,
+  helloMessage
 }: {
   open: boolean;
   assistantName: string;
   setOpen: (open: boolean) => void;
-  helloMessage: string;
-  bgColor: string;
-  textColor: string;
-  logo: string | null;
-  fontFamily: string;
-  fontSize: number;
-  logoSize: number | null;
+  customization: CustomizationType;
+  helloMessage: string
 }) => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
@@ -42,7 +30,10 @@ const TestPage = ({
       const welcomeMessage: Message = {
         text: helloMessage,
         sender: "assistant",
-        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        timestamp: new Date().toLocaleTimeString([], {
+          hour: "2-digit",
+          minute: "2-digit",
+        }),
       };
       setMessages((prevMessages) => [...prevMessages, welcomeMessage]);
     }
@@ -53,7 +44,10 @@ const TestPage = ({
       const userMessage: Message = {
         text: input,
         sender: "user",
-        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        timestamp: new Date().toLocaleTimeString([], {
+          hour: "2-digit",
+          minute: "2-digit",
+        }),
       };
       setMessages((prevMessages) => [...prevMessages, userMessage]);
 
@@ -72,7 +66,10 @@ const TestPage = ({
           const assistantReply: Message = {
             text: data.response,
             sender: "assistant",
-            timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+            timestamp: new Date().toLocaleTimeString([], {
+              hour: "2-digit",
+              minute: "2-digit",
+            }),
           };
           setMessages((prevMessages) => [...prevMessages, assistantReply]);
           setInput("");
@@ -83,21 +80,21 @@ const TestPage = ({
 
   return (
     <div className={styles.testWindow}>
-      <div className={styles.header} style={{ backgroundColor: bgColor }}>
-        {logo && (
+      <div className={styles.header} style={{ backgroundColor: customization.header.bgColor }}>
+        {customization.header.logo && (
           <img
-            src={logo}
+            src={customization.header.logo}
             alt="Логотип"
             className={styles.logo}
-            style={{ width: `${logoSize}px`, height: `${logoSize}px` }}
+            style={{ width: `${customization.header.logoSize}px`, height: `${customization.header.logoSize}px` }}
           />
         )}
         <h2
           className={styles.title}
           style={{
-            color: textColor,
-            fontSize: `${fontSize}px`,
-            fontFamily: fontFamily,
+            color: customization.header.textColor,
+            fontSize: `${customization.header.fontSize}px`,
+            fontFamily: customization.header.fontFamily,
           }}
         >
           {assistantName}
@@ -111,14 +108,13 @@ const TestPage = ({
             className={msg.sender === "user" ? styles.user : styles.assistant}
           >
             <div className={styles.message}>
-              <strong style={{ fontSize: `${fontSize}px` }}>
+              <strong style={{ fontSize: `${customization.dialog.fontSize}px` }}>
                 {msg.sender === "user" ? "Вы" : "Ассистент"}
               </strong>
               <div style={{ display: "flex" }}>
-                <div style={{ fontSize: `${fontSize}px` }}>{msg.text}</div>
+                <div style={{ fontSize: `${customization.dialog.fontSize}px` }}>{msg.text}</div>
                 <div className={styles.timestamp}>{msg.timestamp}</div>
               </div>
-
             </div>
           </div>
         ))}
