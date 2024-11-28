@@ -157,7 +157,7 @@ const TestPage = ({
           label="Ваше сообщение"
           fullWidth
         />
-        <Button onClick={handleSend} variant="contained" color="primary">
+        <Button onClick={handleSend} style={{ fontSize: `${customization?.dialog.fontSize}px`, backgroundColor: `${customization?.header.bgColor}` }} variant="contained" color="primary">
           Отправить
         </Button>
       </div>
