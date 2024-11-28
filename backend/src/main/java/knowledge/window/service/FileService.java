@@ -62,6 +62,19 @@ public class FileService {
             );
         } else {
             assistant = assistantRepository.findByName(assistantName);
+
+            deleteFiles(assistant.getName());
+
+            assistantRepository.delete(assistant);
+
+            Files.createDirectories(directory);
+            assistant = assistantRepository.save(Assistant.builder()
+                    .name(assistantName)
+                    .message(message)
+                    .customize(customize)
+                    .user(user)
+                    .build()
+            );
         }
 
         if (!link.isBlank()) {
