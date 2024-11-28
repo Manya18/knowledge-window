@@ -47,7 +47,8 @@ const CreateAssistant = () => {
     const [openPreview, setOpenPreview] = useState(false);
     const [helloMessage, setHelloMessage] = useState("");
     const [iframeUrl, setIframeUrl] = useState<string>(`http://localhost:3000/assistantPreview/${name}`);
-    const [link, setLink] = useState("");
+    const [link, setLink] = useState(" ");
+    const [isLoad, setIsLoad] = useState(false)
 
     console.log('dsd', iframeUrl)
     const onDrop = (acceptedFiles: File[]) => {
@@ -100,6 +101,7 @@ const CreateAssistant = () => {
         formData.append("customize", JSON.stringify(styles));
         setIframeUrl(`http://localhost:3000/assistantPreview/${name}`)
         try {
+            setIsLoad(false);
             const response = await fetch(`http://localhost:8090/api/file/upload`, {
                 headers: {
                     "Authorization": `Bearer ${token}`,
@@ -108,11 +110,10 @@ const CreateAssistant = () => {
                 body: formData,
             });
             window.localStorage.setItem('assistant', name);
+            if (response.ok) setIsLoad(true);
         } catch (error) {
             console.error('Ошибка при отправке данных:', error);
         }
-        const assistantName = window.localStorage.getItem('assistant')
-
     };
 
     const handleGetIframeLink = () => {
@@ -234,6 +235,7 @@ const CreateAssistant = () => {
                                     open={openPreview}
                                     assistantName={name}
                                     setOpen={setOpenPreview}
+                                    isLoad={isLoad}
                                 ></TestPage>
                             </div>
                         )}

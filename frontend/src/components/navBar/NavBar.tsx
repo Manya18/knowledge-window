@@ -14,7 +14,7 @@ const NavBar = () => {
                     <RiRobot3Line></RiRobot3Line>
                     Ассистенты
                 </a>
-                <a href='/createAssistant' className={`${styles.create} primary-button`}>+Создать</a>
+                <a href='/createAssistant' className={`${styles.create} primary-button`}>+ Создать</a>
             </div>
             {user && <button onClick={logout} className={`${styles.create} primary-button`}>Выйти</button>}
         </div>

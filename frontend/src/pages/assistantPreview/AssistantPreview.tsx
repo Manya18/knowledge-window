@@ -15,15 +15,18 @@ const TestPage = ({
   open,
   assistantName,
   setOpen,
+  isLoad,
 }: {
   open?: boolean;
   assistantName: string;
   setOpen?: (open: boolean) => void;
+  isLoad?: boolean;
 }) => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [assistant, setAssistant] = useState<AssistantInfoType>();
   const [customization, setCustomization] = useState<CustomizationType>();
+
   useEffect(() => {
     if (assistant?.message) {
       const welcomeMessage: Message = {
@@ -39,32 +42,35 @@ const TestPage = ({
   }, [assistant?.message]);
 
   useEffect(() => {
+    console.log("assistantName", assistantName)
     const token = window.sessionStorage.getItem("token");
-    const response = fetch(
-      `http://localhost:8090/api/assistant/${assistantName}`,
-      {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    )
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`Ошибка: ${response.statusText}`);
+    if (isLoad) {
+      const response = fetch(
+        `http://localhost:8090/api/assistant/${assistantName}`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         }
-        return response.json();
-      })
-      .then((data: AssistantInfoType) => {
-        setAssistant(data);
-        setCustomization(JSON.parse(data.customize));
-      })
-      .catch((error) => {
-        console.error("Не удалось загрузить ассистентов:", error);
-      });
+      )
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(`Ошибка: ${response.statusText}`);
+          }
+          return response.json();
+        })
+        .then((data: AssistantInfoType) => {
+          setAssistant(data);
+          setCustomization(JSON.parse(data.customize));
+        })
+        .catch((error) => {
+          console.error("Не удалось загрузить ассистентов:", error);
+        });
+    }
+    console.log("assista", assistant)
 
-  }, [assistantName]);
-  console.log("assista", assistant)
+  }, [isLoad]);
   const handleSend = () => {
     if (input.trim()) {
       const userMessage: Message = {
@@ -136,12 +142,14 @@ const TestPage = ({
             key={index}
             className={msg.sender === "user" ? styles.user : styles.assistant}
           >
-            <div className={styles.message}>
-              <strong style={{ fontSize: `${customization?.dialog.fontSize}px` }}>
+            <div className={styles.message} style={{ backgroundColor: `${customization?.dialog.bgColor}`, border: `1px solid ${customization?.dialog.borderColor}` }}>
+              <strong style={{ fontSize: `${customization?.dialog.fontSize}px`, color: `${customization?.dialog.textColor}` }}>
                 {msg.sender === "user" ? "Вы" : "Ассистент"}
               </strong>
-              <div style={{ display: "flex" }}>
-                <div style={{ fontSize: `${customization?.dialog.fontSize}px` }}>{msg.text}</div>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", gap: '15px' }}>
+                <span style={{ fontSize: `${customization?.dialog.fontSize}px`, color: `${customization?.dialog.textColor}`, wordBreak: 'break-all' }}>
+                  {msg.text}
+                </span>
                 <div className={styles.timestamp}>{msg.timestamp}</div>
               </div>
             </div>

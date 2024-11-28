@@ -10,7 +10,7 @@ import {
 import styles from "./dialogCustomization.module.css";
 import { DialogCustomizationType } from "../../types/customatizationType";
 
-const DialogCustomization = ({options, setOptions}: {options: DialogCustomizationType, setOptions: (options: DialogCustomizationType) => void}) => {
+const DialogCustomization = ({ options, setOptions }: { options: DialogCustomizationType, setOptions: (options: DialogCustomizationType) => void }) => {
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -57,7 +57,7 @@ const DialogCustomization = ({options, setOptions}: {options: DialogCustomizatio
                 label="Цвет фона сообщения"
                 type="color"
                 value={options.messageBg}
-                name="textColor"
+                name="messageBg"
                 onChange={handleChange}
             />
             <TextField
@@ -66,7 +66,7 @@ const DialogCustomization = ({options, setOptions}: {options: DialogCustomizatio
                 label="Цвет рамки сообщения"
                 type="color"
                 value={options.borderColor}
-                name="textColor"
+                name="borderColor"
                 onChange={handleChange}
             />
             <FormControl className={styles.fontControl}>

@@ -51,7 +51,7 @@ const AssistantsList: React.FC = () => {
     const newAssistant = {
       ...assistant,
       id: assistants.length + 1,
-      title: `${assistant.title} (Копия)`,
+      name: `${assistant.name} (Копия)`,
     };
     setAssistants([...assistants, newAssistant]);
   };
@@ -69,7 +69,7 @@ const AssistantsList: React.FC = () => {
       if (!response.ok) {
         throw new Error(`Ошибка: ${response.statusText}`);
       } else {
-        setAssistants((prevAssistants) => 
+        setAssistants((prevAssistants) =>
           prevAssistants.filter((assistant) => assistant.id !== id)
         );
       }
@@ -111,7 +111,10 @@ const AssistantsList: React.FC = () => {
                 </button>
                 <button
                   className={`${styles.testButton} primary-button`}
-                  onClick={() => navigate(`/assistantPreview/${assistant.id}`)}
+                  onClick={() => {
+                    window.localStorage.setItem('assistant', assistant.name)
+                    navigate(`/assistantPreview/${assistant.name}`)
+                  }}
                 >
                   Тестировать
                 </button>

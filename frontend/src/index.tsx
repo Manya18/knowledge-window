@@ -43,7 +43,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/assistantPreview/:id",
-    element: <TestPage assistantName={assistantName ?? ''} />,
+    element: <TestPage assistantName={assistantName ?? ''} isLoad={true} />,
   },
   {
     path: "/iframe",
