@@ -22,10 +22,10 @@ const CreateAssistant = () => {
     const token = window.sessionStorage.getItem('token');
 
     const [customizationHeader, setCustomizationHeader] = useState<HeaderCustomizationType>({
-        bgColor: "#ffffff",
-        textColor: "#000000",
+        bgColor: "#00AAE6",
+        textColor: "#FFFFFF",
         fontFamily: "Arial",
-        fontSize: 16,
+        fontSize: 20,
         logo: null,
         logoSize: null
     });
