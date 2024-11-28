@@ -5,30 +5,32 @@ import {
     Select,
     MenuItem,
     TextField,
+    SelectChangeEvent
 } from "@mui/material";
-import styles from "./customizationSettings.module.css";
+import styles from "./headerCustomization.module.css";
+import { HeaderCustomizationType } from "../../types/customatizationType";
 
-interface Сustomization {
-    bgColor: string;
-    setBgColor: (value: string) => void;
-    textColor: string;
-    setTextColor: (value: string) => void;
-    fontFamily: string;
-    setFontFamily: (value: string) => void;
-    fontSize: number;
-    setFontSize: (value: number) => void;
-}
+const HeaderCustomization = ({options, setOptions}: {options: HeaderCustomizationType, setOptions: (options: HeaderCustomizationType) => void}) => {
 
-const CustomizationSettings: React.FC<Сustomization> = ({
-    bgColor,
-    setBgColor,
-    textColor,
-    setTextColor,
-    fontFamily,
-    setFontFamily,
-    fontSize,
-    setFontSize
-}) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+        const newValue: HeaderCustomizationType = {
+            ...options,
+            [name]: value,
+        }
+        console.log(newValue)
+        setOptions(newValue);
+    };
+
+    const handleFontFamilyChange = (e: SelectChangeEvent<string>) => {
+        const fontFamily = e.target.value as string;
+        const newValue: HeaderCustomizationType = {
+            ...options,
+            fontFamily: fontFamily,
+        }
+        setOptions(newValue);
+    };
+
     return (
         <div className={styles.customization}>
             <TextField
@@ -36,23 +38,25 @@ const CustomizationSettings: React.FC<Сustomization> = ({
                 id="bg-color"
                 label="Цвет фона"
                 type="color"
-                value={bgColor}
-                onChange={(e) => setBgColor(e.target.value)}
+                value={options.bgColor}
+                name="bgColor"
+                onChange={handleChange}
             />
             <TextField
                 className={styles.customizationColor}
                 id="text-color"
                 label="Цвет текста"
                 type="color"
-                value={textColor}
-                onChange={(e) => setTextColor(e.target.value)}
+                value={options.textColor}
+                name="textColor"
+                onChange={handleChange}
             />
             <FormControl className={styles.fontControl}>
                 <InputLabel id="font-select-label">Шрифт</InputLabel>
                 <Select
                     labelId="font-select-label"
-                    value={fontFamily}
-                    onChange={(e) => setFontFamily(e.target.value)}
+                    value={options.fontFamily}
+                    onChange={handleFontFamilyChange}
                 >
                     <MenuItem value="Arial">Arial</MenuItem>
                     <MenuItem value="Verdana">Verdana</MenuItem>
@@ -65,11 +69,12 @@ const CustomizationSettings: React.FC<Сustomization> = ({
                 id="font-size"
                 label="Размер шрифта"
                 type="number"
-                value={fontSize}
-                onChange={(e) => setFontSize(Number(e.target.value))}
+                value={options.fontSize}
+                name="fontSize"
+                onChange={handleChange}
             />
         </div>
     );
 };
 
-export default CustomizationSettings;
+export default HeaderCustomization;

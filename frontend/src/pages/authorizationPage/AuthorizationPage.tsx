@@ -15,10 +15,14 @@ const AuthorizationPage = () => {
         },
         body: JSON.stringify({ username: login, password: password }),
       });
+      const data = await response.json();
+
       if (response.ok) {
         window.sessionStorage.setItem('user', login);
+        window.sessionStorage.setItem('token', data.token);
         window.location.href = "/assistantsList";
       }
+
     } catch (error) {
       console.error("Ошибка при авторизации:", error);
     }
