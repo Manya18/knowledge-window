@@ -16,15 +16,16 @@ import CustomizationSettings from "../../components/headerCustomization/HeaderCu
 import { CustomizationType, DialogCustomizationType, HeaderCustomizationType } from "../../types/customatizationType";
 import DialogCustomization from "../../components/dialogCustomization/DialogCustomization";
 import IframeWrapper from "../iframeWrapper/IframeWrapper";
+import { UUID } from "crypto";
 
 const CreateAssistant = () => {
     const token = window.sessionStorage.getItem('token');
 
     const [customizationHeader, setCustomizationHeader] = useState<HeaderCustomizationType>({
-        bgColor: "#ffffff",
-        textColor: "#000000",
+        bgColor: "#00AAE6",
+        textColor: "#FFFFFF",
         fontFamily: "Arial",
-        fontSize: 16,
+        fontSize: 20,
         logo: null,
         logoSize: null
     });
@@ -45,9 +46,10 @@ const CreateAssistant = () => {
     const [files, setFiles] = useState<File[]>([]);
     const [openPreview, setOpenPreview] = useState(false);
     const [helloMessage, setHelloMessage] = useState("");
-    const [iframeUrl, setIframeUrl] = useState<string>('http://localhost:3000/assistantPreview');
+    const [iframeUrl, setIframeUrl] = useState<string>(`http://localhost:3000/assistantPreview/${name}`);
     const [link, setLink] = useState("");
 
+    console.log('dsd', iframeUrl)
     const onDrop = (acceptedFiles: File[]) => {
         setFiles((prevFiles) => [...prevFiles, ...acceptedFiles]);
     };
@@ -64,12 +66,12 @@ const CreateAssistant = () => {
         })
     }, [customizationHeader, dialogCustomization]);
 
-        const onLogoDrop = (acceptedFiles: File[]) => {
+    const onLogoDrop = (acceptedFiles: File[]) => {
         if (acceptedFiles.length > 0) {
             const file = acceptedFiles[0];
             const reader = new FileReader();
             reader.onload = () => {
-                setCustomizationHeader({...customizationHeader, logo: reader.result as string});
+                setCustomizationHeader({ ...customizationHeader, logo: reader.result as string });
             };
             reader.readAsDataURL(file);
         }
@@ -96,6 +98,7 @@ const CreateAssistant = () => {
             dialog: dialogCustomization
         }
         formData.append("customize", JSON.stringify(styles));
+        setIframeUrl(`http://localhost:3000/assistantPreview/${name}`)
         try {
             const response = await fetch(`http://localhost:8090/api/file/upload`, {
                 headers: {
@@ -108,12 +111,14 @@ const CreateAssistant = () => {
         } catch (error) {
             console.error('Ошибка при отправке данных:', error);
         }
+        const assistantName = window.localStorage.getItem('assistant')
+
     };
 
     const handleGetIframeLink = () => {
         console.log('iframe', iframeUrl)
-      };
-
+    };
+ 
     return (
         <Layout>
             <div className={styles.createAssistant}>
@@ -122,19 +127,20 @@ const CreateAssistant = () => {
                         <h1 className={styles.title}>Создание</h1>
                     </div>
                     <div className={styles.actionButtons}>
-                        <button className={`${styles.iconButton} primary-button`}>
+                        {/* <button className={`${styles.iconButton} primary-button`} onClick={handleDelete}>
                             <RiDeleteBin6Line size={24}></RiDeleteBin6Line>
-                        </button>
+                        </button> */}
                         <button
                             className={`${styles.saveButton} primary-button`}
                             onClick={handleGetIframeLink}
                         >
-                            Сохранить
+                            Получить iframe
                         </button>
                     </div>
                 </header>
                 <div className={styles.body}>
                     <TextField
+                        className={styles.TextField}
                         id="outlined-basic"
                         label="Название ассистента"
                         variant="outlined"
@@ -142,14 +148,15 @@ const CreateAssistant = () => {
                         onChange={(e) => setName(e.target.value)}
                     />
                     <TextField
+                        className={styles.TextField}
                         id="outlined-basic"
                         label="Приветственное сообщение"
                         variant="outlined"
                         value={helloMessage}
                         onChange={(e) => setHelloMessage(e.target.value)}
-
                     />
                     <TextField
+                        className={styles.TextField}
                         id="outlined-link"
                         label="Укажите ссылку на базу знаний"
                         variant="outlined"
@@ -179,7 +186,7 @@ const CreateAssistant = () => {
                                             label="Размер логотипа"
                                             type="number"
                                             value={customizationHeader.logoSize}
-                                            onChange={(e) => setCustomizationHeader({...customizationHeader, logoSize: e.target.value})}
+                                            onChange={(e) => setCustomizationHeader({ ...customizationHeader, logoSize: e.target.value })}
                                         />
                                         <div {...getLogoProps()} className={styles.logoUpload}>
                                             <input {...getLogoInputProps()} />
@@ -208,15 +215,17 @@ const CreateAssistant = () => {
                         Сохранить
                     </button>
                     {openPreview && (
-                        <TestPage
-                            open={openPreview}
-                            assistantName={name}
-                            setOpen={setOpenPreview}
-                        ></TestPage>
+                        <div className={styles.previewWrapper}>
+                            <TestPage
+                                open={openPreview}
+                                assistantName={name}
+                                setOpen={setOpenPreview}
+                            ></TestPage>
+                        </div>
                     )}
                 </div>
             </div>
-            <IframeWrapper src={iframeUrl} title={name} width="100%" height="100%"/>
+            {/* <IframeWrapper src={iframeUrl} title={name} width="100%" height="100%" /> */}
         </Layout>
     );
 };

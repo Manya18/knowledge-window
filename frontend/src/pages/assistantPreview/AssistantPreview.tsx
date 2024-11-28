@@ -3,6 +3,7 @@ import styles from "./assistantPreview.module.css";
 import { useEffect, useState } from "react";
 import { CustomizationType } from "../../types/customatizationType";
 import { AssistantInfoType } from "../../types/assistantType";
+import { RiCloseLine } from "@remixicon/react";
 
 interface Message {
   text: string;
@@ -40,7 +41,7 @@ const TestPage = ({
   useEffect(() => {
     const token = window.sessionStorage.getItem("token");
     const response = fetch(
-      `http://${process.env.SERVER_HOST}:${process.env.SERVER_PORT}/api/assistant/${assistantName}`,
+      `http://localhost:8090/api/assistant/${assistantName}`,
       {
         method: "GET",
         headers: {
@@ -63,7 +64,7 @@ const TestPage = ({
       });
 
   }, [assistantName]);
-
+  console.log("assista", assistant)
   const handleSend = () => {
     if (input.trim()) {
       const userMessage: Message = {
@@ -105,6 +106,9 @@ const TestPage = ({
 
   return (
     <div className={styles.testWindow}>
+      {setOpen && <button className={styles.closeButton} onClick={() => setOpen(false)}>
+        <RiCloseLine></RiCloseLine>
+      </button>}
       <div className={styles.header} style={{ backgroundColor: customization?.header.bgColor }}>
         {customization?.header.logo && (
           <img
@@ -153,7 +157,7 @@ const TestPage = ({
           label="Ваше сообщение"
           fullWidth
         />
-        <Button onClick={handleSend} variant="contained" color="primary">
+        <Button onClick={handleSend} style={{ fontSize: `${customization?.dialog.fontSize}px`, backgroundColor: `${customization?.header.bgColor}` }} variant="contained" color="primary">
           Отправить
         </Button>
       </div>
