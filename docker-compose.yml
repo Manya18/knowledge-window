@@ -64,9 +64,24 @@ services:
     networks:
       - backend
 
+  ollama:
+    image: ollama/ollama:latest
+    depends_on:
+      - knowledge-window-python
+    restart: unless-stopped
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama:/root/.ollama
+
+    entrypoint: ollama run llama3.2:3b
+    networks:
+      - backend
+
 volumes:
   postgresql: { }
   files: { }
+  ollama: { }
 
 networks:
   backend: { }
