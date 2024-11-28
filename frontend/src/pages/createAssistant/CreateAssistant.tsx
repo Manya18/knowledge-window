@@ -45,17 +45,7 @@ const CreateAssistant = () => {
     const [files, setFiles] = useState<File[]>([]);
     const [openPreview, setOpenPreview] = useState(false);
     const [helloMessage, setHelloMessage] = useState("");
-<<<<<<< Updated upstream
-
-=======
-    const [logo, setLogo] = useState<string | null>(null);
-    const [bgColor, setBgColor] = useState("#ffffff");
-    const [textColor, setTextColor] = useState("#000000");
-    const [fontFamily, setFontFamily] = useState("Arial");
-    const [fontSize, setFontSize] = useState(16);
-    const [logoSize, setLogoSize] = useState(100);
     const [iframeUrl, setIframeUrl] = useState<string>('http://localhost:3000/assistantPreview');
->>>>>>> Stashed changes
     const [link, setLink] = useState("");
 
     const onDrop = (acceptedFiles: File[]) => {
