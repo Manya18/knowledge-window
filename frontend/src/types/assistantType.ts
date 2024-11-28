@@ -1,7 +1,7 @@
 export interface AssistantInfoType {
     id: string,
     name: string,
-    files: File[],
+    files: string[],
     message: string,
     customize: string
 }

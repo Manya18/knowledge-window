@@ -45,9 +45,10 @@ const CreateAssistant = () => {
     const [files, setFiles] = useState<File[]>([]);
     const [openPreview, setOpenPreview] = useState(false);
     const [helloMessage, setHelloMessage] = useState("");
-    const [iframeUrl, setIframeUrl] = useState<string>('http://localhost:3000/assistantPreview');
+    const [iframeUrl, setIframeUrl] = useState<string>(`http://localhost:3000/assistantPreview/${name}`);
     const [link, setLink] = useState("");
 
+    console.log('dsd', iframeUrl)
     const onDrop = (acceptedFiles: File[]) => {
         setFiles((prevFiles) => [...prevFiles, ...acceptedFiles]);
     };
@@ -64,12 +65,12 @@ const CreateAssistant = () => {
         })
     }, [customizationHeader, dialogCustomization]);
 
-        const onLogoDrop = (acceptedFiles: File[]) => {
+    const onLogoDrop = (acceptedFiles: File[]) => {
         if (acceptedFiles.length > 0) {
             const file = acceptedFiles[0];
             const reader = new FileReader();
             reader.onload = () => {
-                setCustomizationHeader({...customizationHeader, logo: reader.result as string});
+                setCustomizationHeader({ ...customizationHeader, logo: reader.result as string });
             };
             reader.readAsDataURL(file);
         }
@@ -96,6 +97,7 @@ const CreateAssistant = () => {
             dialog: dialogCustomization
         }
         formData.append("customize", JSON.stringify(styles));
+        setIframeUrl(`http://localhost:3000/assistantPreview/${name}`)
         try {
             const response = await fetch(`http://localhost:8090/api/file/upload`, {
                 headers: {
@@ -108,11 +110,13 @@ const CreateAssistant = () => {
         } catch (error) {
             console.error('Ошибка при отправке данных:', error);
         }
+        const assistantName = window.localStorage.getItem('assistant')
+
     };
 
     const handleGetIframeLink = () => {
         console.log('iframe', iframeUrl)
-      };
+    };
 
     return (
         <Layout>
@@ -179,7 +183,7 @@ const CreateAssistant = () => {
                                             label="Размер логотипа"
                                             type="number"
                                             value={customizationHeader.logoSize}
-                                            onChange={(e) => setCustomizationHeader({...customizationHeader, logoSize: e.target.value})}
+                                            onChange={(e) => setCustomizationHeader({ ...customizationHeader, logoSize: e.target.value })}
                                         />
                                         <div {...getLogoProps()} className={styles.logoUpload}>
                                             <input {...getLogoInputProps()} />
@@ -216,7 +220,7 @@ const CreateAssistant = () => {
                     )}
                 </div>
             </div>
-            <IframeWrapper src={iframeUrl} title={name} width="100%" height="100%"/>
+            {/* <IframeWrapper src={iframeUrl} title={name} width="100%" height="100%" /> */}
         </Layout>
     );
 };

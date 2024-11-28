@@ -40,7 +40,7 @@ const TestPage = ({
   useEffect(() => {
     const token = window.sessionStorage.getItem("token");
     const response = fetch(
-      `http://${process.env.SERVER_HOST}:${process.env.SERVER_PORT}/api/assistant/${assistantName}`,
+      `http://localhost:8090/api/assistant/${assistantName}`,
       {
         method: "GET",
         headers: {
@@ -63,7 +63,7 @@ const TestPage = ({
       });
 
   }, [assistantName]);
-
+  console.log("assista", assistant)
   const handleSend = () => {
     if (input.trim()) {
       const userMessage: Message = {
