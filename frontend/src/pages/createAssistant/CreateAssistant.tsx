@@ -174,10 +174,9 @@ const CreateAssistant = () => {
                                             value={customizationHeader.logoSize}
                                             onChange={(e) => setCustomizationHeader({...customizationHeader, logoSize: e.target.value})}
                                         />
-
                                         <div {...getLogoProps()} className={styles.logoUpload}>
                                             <input {...getLogoInputProps()} />
-                                            <p>Перетащите логотип сюда или нажмите, чтобы выбрать файл</p>
+                                            <p>Добавьте логотип</p>
                                             {customizationHeader.logo && (
                                                 <img
                                                     src={customizationHeader.logo}
@@ -190,7 +189,7 @@ const CreateAssistant = () => {
                                 </div>
                             </div>
                             <div className={styles.dialogCust}>
-                                <h3 className={styles.headerCust}>Кастомизация диалога</h3>
+                                <h3 className={styles.headerCustTitle}>Кастомизация диалога</h3>
                                 <DialogCustomization options={dialogCustomization} setOptions={setDialogCustomization} />
                             </div>
                         </div>
