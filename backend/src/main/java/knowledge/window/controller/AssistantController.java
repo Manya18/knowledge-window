@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.Set;
 import java.util.UUID;
 
@@ -35,7 +36,7 @@ public class AssistantController {
 
     @DeleteMapping("/delete")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<Void> delete(@RequestParam UUID assistantId) {
+    public ResponseEntity<Void> delete(@RequestParam UUID assistantId) throws IOException {
         assistantService.delete(assistantId);
         return ResponseEntity.ok().build();
     }

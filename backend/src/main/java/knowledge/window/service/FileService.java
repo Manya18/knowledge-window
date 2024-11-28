@@ -91,6 +91,14 @@ public class FileService {
         }
     }
 
+    public void deleteFiles(String folderName) throws IOException {
+        Path assistantDirectory = Paths.get(folderName);
+
+        Path directory = BASE_DIRECTORY.resolve(assistantDirectory);
+
+        Files.deleteIfExists(directory);
+    }
+
     private String getDateFromLink(String link) {
         WebClient webClient = WebClient.create();
 

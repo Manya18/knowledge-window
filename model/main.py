@@ -77,27 +77,6 @@ def query_options():
     prompt = f"В тексте:\n{full_text}\n\nОтветьте на запрос: {question}"
     response = generate_with_llama_parallel(prompt)
     return jsonify({"response": response})
-
-@app.route('/api/extract_text', methods=['POST'])
-def extract_text_from_url():
-    if not request.is_json:
-        return jsonify({"error": "Content-Type должен быть application/json"}), 415
-
-    data = request.get_json()
-    url = data.get('url')
-
-    if not url:
-        return jsonify({"error": "URL не указан"}), 400
-
-    try:
-        response = requests.get(url)
-        response.raise_for_status() 
-        soup = BeautifulSoup(response.text, 'html.parser')
-        text = soup.get_text()
-        return jsonify({"text": text})
-
-    except requests.exceptions.RequestException as e:
-        return jsonify({"error": f"Ошибка запроса: {str(e)}"}), 500
     
 @app.after_request
 def add_cors_headers(response):

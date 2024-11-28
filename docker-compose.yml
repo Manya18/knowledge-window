@@ -2,7 +2,7 @@ services:
   postgresql:
     image: postgres:16
     ports:
-      - "5432:5432"
+      - "5433:5432"
     environment:
       POSTGRES_DB: knowledge_window
       POSTGRES_USER: postgres
@@ -29,8 +29,8 @@ services:
       - backend
     restart: on-failure
 
-  knowledge-window-app:
-    container_name: knowledge-window-app
+  knowledge-window-java:
+    container_name: knowledge-window-java
     depends_on:
       - liquibase-migrations
     ports:
@@ -45,10 +45,28 @@ services:
       SPRING_DATASOURCE_PASSWORD: postgres
     networks:
       - backend
+    volumes:
+      - files:/var/lib/files
     restart: on-failure
+    
+  knowledge-window-python:
+    container_name: knowledge-window-python
+    depends_on:
+      - knowledge-window-java
+    build:
+      context: ./model
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    restart: on-failure
+    volumes:
+      - files:/var/lib/files
+    networks:
+      - backend
 
 volumes:
   postgresql: { }
+  files: { }
 
 networks:
   backend: { }
