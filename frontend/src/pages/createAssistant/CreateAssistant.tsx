@@ -211,8 +211,6 @@ const CreateAssistant = () => {
                             open={openPreview}
                             assistantName={name}
                             setOpen={setOpenPreview}
-                            helloMessage={helloMessage}
-                            customization={style}
                         ></TestPage>
                     )}
                 </div>
