@@ -96,7 +96,7 @@ const CreateAssistant = () => {
         }
         formData.append("customize", " 1");
         try {
-            const response = await fetch('http://localhost:8080/api/file/upload', {
+            const response = await fetch(`http://${process.env.SERVER_HOST}:${process.env.SERVER_PORT}/api/file/upload`, {
                 headers: {
                     "Authorization": `Bearer ${token}`,
                 },
