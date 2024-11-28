@@ -1,0 +1,15 @@
+.customization {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+.customizationColor,
+.fontSizeInput,
+.logoSizeInput {
+    width: 100%;
+}
+
+.fontControl {
+    min-width: 200px;
+}

@@ -69,13 +69,23 @@
     background-color: #f9f9f9;
 }
 
-.customization {
-    display: flex;
+.customizationWrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
     gap: 10px;
 }
-
+.customizationLeft{
+    display: flex;
+    flex-direction: column;
+}
+.logoActions{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: 16px;
+}
 .customizationColor {
-    width: 200px;
+    /* width: 200px; */
 }
 
 .logoUpload {

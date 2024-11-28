@@ -12,27 +12,26 @@ import { useState } from "react";
 import { useDropzone } from "react-dropzone";
 import TestPage from "../assistantPreview/AssistantPreview";
 import Layout from "../../components/layout/Layout";
-import CustomizationSettings from "../../components/customizationSettings";
-
-interface Сustomization {
-    bgColor: string;
-    setBgColor: (value: string) => void;
-    textColor: string;
-    setTextColor: (value: string) => void;
-    fontFamily: string;
-    setFontFamily: (value: string) => void;
-    fontSize: number;
-    setFontSize: (value: number) => void;
-}
+import CustomizationSettings from "../../components/headerCustomization/HeaderCustomization";
+import { DialogCustomizationType, HeaderCustomizationType } from "../../types/customatizationType";
+import DialogCustomization from "../../components/dialogCustomization/DialogCustomization";
 
 const CreateAssistant = () => {
 
-    // const [customization, setСustomization] = useState<Сustomization>({
-    //     bgColor: "",
-    //     textColor: "",    
-    //     fontFamily: "",
-    //     fontSize: 0
-    //   });
+    const [customizationHeader, setCustomizationHeader] = useState<HeaderCustomizationType>({
+        bgColor: "#ffffff",
+        textColor: "#000000",
+        fontFamily: "Arial",
+        fontSize: 16,
+    });
+    const [dialogCustomization, setDialogCustomization] = useState<DialogCustomizationType>({
+        bgColor: "#ffffff",
+        textColor: "#000000",
+        messageBg: '#ffffff',
+        borderColor: "#000000",
+        fontFamily: "Arial",
+        fontSize: 16,
+    });
 
     const [name, setName] = useState("");
     const [files, setFiles] = useState<File[]>([]);
@@ -153,39 +152,41 @@ const CreateAssistant = () => {
                     </ul>
                 </div>
                 <div className={styles.customization}>
-                    <CustomizationSettings
-                        bgColor={bgColor}
-                        setBgColor={setBgColor}
-                        textColor={textColor}
-                        setTextColor={setTextColor}
-                        fontFamily={fontFamily}
-                        setFontFamily={setFontFamily}
-                        fontSize={fontSize}
-                        setFontSize={setFontSize}
-                    />
+                    <h2 className={styles.customizationTitle}>Кастомизация</h2>
+                    <div className={styles.customizationWrapper}>
+                        <div className={styles.headerCust}>
+                            <h3 className={styles.headerCustTitle}>Кастомизация шапки</h3>
+                            <div className={styles.customizationLeft}>
+                                <CustomizationSettings options={customizationHeader} setOptions={setCustomizationHeader}/>
+                                <div className={styles.logoActions}>
+                                    <TextField
+                                        className={styles.logoSizeInput}
+                                        id="logo-size"
+                                        label="Размер логотипа"
+                                        type="number"
+                                        value={logoSize}
+                                        onChange={(e) => setLogoSize(Number(e.target.value))}
+                                    />
 
-                </div>
-    
-                <TextField
-                    className={styles.logoSizeInput}
-                    id="logo-size"
-                    label="Размер логотипа"
-                    type="number"
-                    value={logoSize}
-                    onChange={(e) => setLogoSize(Number(e.target.value))}
-                />
-
-                <div {...getLogoProps()} className={styles.logoUpload}>
-                    <input {...getLogoInputProps()} />
-                    <p>Перетащите логотип сюда или нажмите, чтобы выбрать файл</p>
-                    {logo && (
-                        <img
-                            src={logo}
-                            alt="Логотип"
-                            className={styles.logoPreview}
-                        />
-                    )}
-
+                                    <div {...getLogoProps()} className={styles.logoUpload}>
+                                        <input {...getLogoInputProps()} />
+                                        <p>Перетащите логотип сюда или нажмите, чтобы выбрать файл</p>
+                                        {logo && (
+                                            <img
+                                                src={logo}
+                                                alt="Логотип"
+                                                className={styles.logoPreview}
+                                            />
+                                        )}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className={styles.dialogCust}>
+                            <h3 className={styles.headerCust}>Кастомизация диалога</h3>
+                            <DialogCustomization options={dialogCustomization} setOptions={setDialogCustomization}/>
+                        </div>
+                    </div>
                 </div>
                 <button
                     className={`${styles.testButton} primary-button`}
