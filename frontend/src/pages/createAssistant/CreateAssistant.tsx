@@ -95,7 +95,7 @@ const CreateAssistant = () => {
             header: customizationHeader,
             dialog: dialogCustomization
         }
-        formData.append("customize", " 1");
+        formData.append("customize", JSON.stringify(styles));
         try {
             const response = await fetch(`http://localhost:8090/api/file/upload`, {
                 headers: {
