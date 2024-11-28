@@ -14,10 +14,13 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
+import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Comparator;
 import java.util.Random;
+import java.util.stream.Stream;
 
 @Service
 @Slf4j
@@ -108,6 +111,12 @@ public class FileService {
         Path assistantDirectory = Paths.get(folderName);
 
         Path directory = BASE_DIRECTORY.resolve(assistantDirectory);
+
+        try (DirectoryStream<Path> stream = Files.newDirectoryStream(directory)) {
+            for (Path file : stream) {
+                Files.delete(file);
+            }
+        }
 
         Files.deleteIfExists(directory);
     }
