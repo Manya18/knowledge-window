@@ -32,7 +32,7 @@ const RegistrationPage = () => {
   const registration = async () => {
     try {
       const response = await fetch(
-        `http://${process.env.SERVER_HOST}:${process.env.SERVER_PORT}/api/auth/registration`,
+        `http://localhost:8090/api/auth/registration`,
         {
           method: "POST",
           headers: {
