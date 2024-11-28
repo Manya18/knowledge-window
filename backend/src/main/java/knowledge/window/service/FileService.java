@@ -1,5 +1,6 @@
 package knowledge.window.service;
 
+import knowledge.window.dto.request.ExtractTextRequest;
 import knowledge.window.entity.Assistant;
 import knowledge.window.entity.File;
 import knowledge.window.repository.AssistantRepository;
@@ -93,8 +94,9 @@ public class FileService {
     private String getDateFromLink(String link) {
         WebClient webClient = WebClient.create();
 
-        return webClient.get()
-                .uri(link)
+        return webClient.post()
+                .uri("http://localhost:5000/api/extract_text")
+                .bodyValue(new ExtractTextRequest(link))
                 .retrieve()
                 .bodyToMono(String.class)
                 .doOnError(error -> log.error(error.getMessage()))
