@@ -1,0 +1,54 @@
+services:
+  postgresql:
+    image: postgres:16
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: knowledge_window
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - postgresql:/var/lib/postgresql/data
+    networks:
+      - backend
+
+  liquibase-migrations:
+    image: liquibase/liquibase:4.25
+    depends_on:
+      - postgresql
+    command:
+      - --changelog-file=master.xml
+      - --driver=org.postgresql.Driver
+      - --url=jdbc:postgresql://postgresql:5432/knowledge_window
+      - --username=postgres
+      - --password=postgres
+      - update
+    volumes:
+      - ./backend/migrations:/liquibase/changelog
+    networks:
+      - backend
+    restart: on-failure
+
+  knowledge-window-app:
+    container_name: knowledge-window-app
+    depends_on:
+      - liquibase-migrations
+    ports:
+      - "8090:8090"
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    environment:
+      SERVER_PORT: 8090
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgresql:5432/knowledge_window
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+    networks:
+      - backend
+    restart: on-failure
+
+volumes:
+  postgresql: { }
+
+networks:
+  backend: { }
