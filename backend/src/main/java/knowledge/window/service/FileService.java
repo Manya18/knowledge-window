@@ -94,9 +94,8 @@ public class FileService {
     private String getDateFromLink(String link) {
         WebClient webClient = WebClient.create();
 
-        return webClient.post()
-                .uri("http://localhost:5000/api/extract_text")
-                .bodyValue(new ExtractTextRequest(link))
+        return webClient.get()
+                .uri(link)
                 .retrieve()
                 .bodyToMono(String.class)
                 .doOnError(error -> log.error(error.getMessage()))
