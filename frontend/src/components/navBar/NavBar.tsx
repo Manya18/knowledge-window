@@ -10,7 +10,7 @@ const NavBar = () => {
     return (
         <div className={styles.navBar}>
             <div className={styles.topButtons}>
-                <a href='/' className={styles.assistants}>
+                <a href='/assistantsList' className={styles.assistants}>
                     <RiRobot3Line></RiRobot3Line>
                     Ассистенты
                 </a>
