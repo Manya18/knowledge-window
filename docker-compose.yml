@@ -75,8 +75,6 @@ services:
       - "11434:11434"
     volumes:
       - ollama:/root/.ollama
-
-    entrypoint: ollama run llama3.2:3b
     networks:
       - backend
 
