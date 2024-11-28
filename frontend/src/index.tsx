@@ -13,6 +13,8 @@ const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 
+const assistantName = window.localStorage.getItem('assistant')
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -38,10 +40,10 @@ const router = createBrowserRouter([
     path: "/registration",
     element: <RegistrationPage></RegistrationPage>,
   },
-  // {
-  //   path: "/assistantPreview/:id",
-  //   element: <TestPage />,
-  // },
+  {
+    path: "/assistantPreview/:id",
+    element: <TestPage assistantName={assistantName ?? ''}/>,
+  },
 ]);
 
 root.render(

@@ -15,9 +15,9 @@ const TestPage = ({
   assistantName,
   setOpen,
 }: {
-  open: boolean;
+  open?: boolean;
   assistantName: string;
-  setOpen: (open: boolean) => void;
+  setOpen?: (open: boolean) => void;
 }) => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");

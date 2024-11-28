@@ -104,6 +104,7 @@ const CreateAssistant = () => {
                 method: 'POST',
                 body: formData,
             });
+            window.localStorage.setItem('assistant', name);
         } catch (error) {
             console.error('Ошибка при отправке данных:', error);
         }
