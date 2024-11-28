@@ -20,6 +20,10 @@ public class AssistantService {
         return userService.getByUsername(userName).getAssistants();
     }
 
+    public Assistant getByName(String name) {
+        return assistantRepository.findByName(name);
+    }
+
     public void change(UUID id) {
         if (assistantRepository.existsById(id)){
             assistantRepository.deleteById(id);

@@ -26,6 +26,13 @@ public class AssistantController {
                 .body(assistantService.getAllAssistants(userName));
     }
 
+    @GetMapping("/{name}")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<Assistant> getById(@RequestParam String name) {
+        return ResponseEntity.ok()
+                .body(assistantService.getByName(name));
+    }
+
     @DeleteMapping("/delete")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Void> delete(@RequestParam UUID assistantId) {
