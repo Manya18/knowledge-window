@@ -15,6 +15,7 @@ import Layout from "../../components/layout/Layout";
 import CustomizationSettings from "../../components/headerCustomization/HeaderCustomization";
 import { CustomizationType, DialogCustomizationType, HeaderCustomizationType } from "../../types/customatizationType";
 import DialogCustomization from "../../components/dialogCustomization/DialogCustomization";
+import IframeWrapper from "../iframeWrapper/IframeWrapper";
 
 const CreateAssistant = () => {
     const token = window.sessionStorage.getItem('token');
@@ -44,7 +45,17 @@ const CreateAssistant = () => {
     const [files, setFiles] = useState<File[]>([]);
     const [openPreview, setOpenPreview] = useState(false);
     const [helloMessage, setHelloMessage] = useState("");
+<<<<<<< Updated upstream
 
+=======
+    const [logo, setLogo] = useState<string | null>(null);
+    const [bgColor, setBgColor] = useState("#ffffff");
+    const [textColor, setTextColor] = useState("#000000");
+    const [fontFamily, setFontFamily] = useState("Arial");
+    const [fontSize, setFontSize] = useState(16);
+    const [logoSize, setLogoSize] = useState(100);
+    const [iframeUrl, setIframeUrl] = useState<string>('http://localhost:3000/assistantPreview');
+>>>>>>> Stashed changes
     const [link, setLink] = useState("");
 
     const onDrop = (acceptedFiles: File[]) => {
@@ -108,6 +119,10 @@ const CreateAssistant = () => {
         }
     };
 
+    const handleGetIframeLink = () => {
+        console.log('iframe', iframeUrl)
+      };
+
     return (
         <Layout>
             <div className={styles.createAssistant}>
@@ -121,6 +136,7 @@ const CreateAssistant = () => {
                         </button>
                         <button
                             className={`${styles.saveButton} primary-button`}
+                            onClick={handleGetIframeLink}
                         >
                             Сохранить
                         </button>
@@ -211,6 +227,7 @@ const CreateAssistant = () => {
                     )}
                 </div>
             </div>
+            <IframeWrapper src={iframeUrl} title={name} width="100%" height="100%"/>
         </Layout>
     );
 };
