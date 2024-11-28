@@ -61,15 +61,18 @@ const AssistantsList: React.FC = () => {
       `http://localhost:8080/api/assistant/delete?assistantId=${id}`,
       {
         method: "DELETE",
-        // headers: {
-        //   Authorization: `Bearer ${token}`,
-        // },
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       }
     ).then((response) => {
       if (!response.ok) {
         throw new Error(`Ошибка: ${response.statusText}`);
+      } else {
+        setAssistants((prevAssistants) => 
+          prevAssistants.filter((assistant) => assistant.id !== id)
+        );
       }
-      return response.json();
     });
   };
 
