@@ -140,6 +140,7 @@ const CreateAssistant = () => {
                 </header>
                 <div className={styles.body}>
                     <TextField
+                        className={styles.TextField}
                         id="outlined-basic"
                         label="Название ассистента"
                         variant="outlined"
@@ -147,6 +148,7 @@ const CreateAssistant = () => {
                         onChange={(e) => setName(e.target.value)}
                     />
                     <TextField
+                        className={styles.TextField}
                         id="outlined-basic"
                         label="Приветственное сообщение"
                         variant="outlined"
@@ -154,6 +156,7 @@ const CreateAssistant = () => {
                         onChange={(e) => setHelloMessage(e.target.value)}
                     />
                     <TextField
+                        className={styles.TextField}
                         id="outlined-link"
                         label="Укажите ссылку на базу знаний"
                         variant="outlined"
@@ -212,11 +215,13 @@ const CreateAssistant = () => {
                         Сохранить
                     </button>
                     {openPreview && (
-                        <TestPage
-                            open={openPreview}
-                            assistantName={name}
-                            setOpen={setOpenPreview}
-                        ></TestPage>
+                        <div className={styles.previewWrapper}>
+                            <TestPage
+                                open={openPreview}
+                                assistantName={name}
+                                setOpen={setOpenPreview}
+                            ></TestPage>
+                        </div>
                     )}
                 </div>
             </div>

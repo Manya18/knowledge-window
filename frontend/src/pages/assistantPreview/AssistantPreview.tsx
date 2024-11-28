@@ -3,6 +3,7 @@ import styles from "./assistantPreview.module.css";
 import { useEffect, useState } from "react";
 import { CustomizationType } from "../../types/customatizationType";
 import { AssistantInfoType } from "../../types/assistantType";
+import { RiCloseLine } from "@remixicon/react";
 
 interface Message {
   text: string;
@@ -105,6 +106,9 @@ const TestPage = ({
 
   return (
     <div className={styles.testWindow}>
+      {setOpen && <button className={styles.closeButton} onClick={() => setOpen(false)}>
+        <RiCloseLine></RiCloseLine>
+      </button>}
       <div className={styles.header} style={{ backgroundColor: customization?.header.bgColor }}>
         {customization?.header.logo && (
           <img
